@@ -1,4 +1,4 @@
-# Global and local complexity measures for an fMRI FLOW study
+# Models, animations, and signatures of maetastability
 
 ### 
 *Code to accompany Metastability demystified June 2024*
@@ -7,22 +7,21 @@
 fran.hancock@kcl.ac.uk
 January 2024</td></tr></table>
 
-# Animations
+# **Animations**
 
-### Setup your local path
+Setup your local path:
 
 addpath(genpath('/Users/HDF/Hancock Dean Dropbox/Doug Dean/Fran/Academics/PostDoc/Projects/META_MODELLING'))
 
-## If you just wish to run the animations without re-running the simulation
-## You will still need to download the Brain Dynamics Toolbox here https://bdtoolbox.org/
+If you just wish to run the animations without re-running the simulation
+You will still need to download the Brain Dynamics Toolbox here https://bdtoolbox.org/
 
 In the models folder, load a model into MATLAB, e.g.
 
 load HMM.mat sys
 gui = bdGUI(sys)
 
-## If you wish to run the simulations then  download the Brain Dynamics Toolbox here https://bdtoolbox.org/
-
+If you wish to run the simulations then  download the Brain Dynamics Toolbox here https://bdtoolbox.org/
 
 ### Kuramoto Shanahan model
 
@@ -30,7 +29,7 @@ gui = bdGUI(sys)
 
 Kij = random_connections; sys = KuramotoShan(Kij); gui = bdGUI(sys);
 
-#### save the model from the GUI in models/
+save the model from the GUI in models/
 
 #### run the simulation plot and save the video
 
@@ -61,31 +60,31 @@ Plot_phases_HKB(7500,10000,10,1)
 
 # Signatures of metastability  
 
-### Instructions
+## Instructions
 
 #### The code for the signatures is in the Signatures folder
 
 AAL116 parcellated data for 20 Healthy controls and 20 patients with Schizophrenia are supplied
 Source - COBRE - See Metastability as a candidate neuromechanistic marker for schizophrenia, PLOS ONE 20
 
-### Step 1
-Modify the loadParameters.m if you are running this code on your own data.
+Modify the **loadParameters.m** if you are running this code on your own data.
 
 Otherwise
 
-Run get_signatures.m
+Run **get_signatures.m**
 
-#### This file will calculate the 4 signatures in the manuscript and output the results in a csv file for statistical anaysis in R Studio
+This file will calculate the 4 signatures in the manuscript and output the results in a csv file for statistical anaysis in R Studio
 
-In the folder statistics, run 01_Global_metrics.Rmd in RStudio
+In the folder _statistics_, run **01_Global_metrics.Rmd** in RStudio
 
-#### The statistics will be saved in excel under the folder Results
+The statistics will be saved in excel under the folder _Results_
 
-#### The figure will be saved in the folder Figures
+The figure will be saved in the folder _Figures_
 
 #### NOTE: For MAC users, depending on which OS version you are running, the export to Excel may not work.
 
 If all runs well, you should have the following figure in the Figures folder
+![Example of non-parametric analysis of variance for example data](kruskal_Global_Metrics.pdf)
 
 
 
