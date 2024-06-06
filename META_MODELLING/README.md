@@ -1,4 +1,4 @@
-# Global and local complexity measures for an fMRI FLOW study
+# Models, animations and Signatures of metastability
 
 ### 
 *Code to accompany Metastability demystified June 2024*
@@ -13,26 +13,25 @@ January 2024</td></tr></table>
 
 addpath(genpath('/Users/HDF/Hancock Dean Dropbox/Doug Dean/Fran/Academics/PostDoc/Projects/META_MODELLING'))
 
-## If you just wish to run the animations without re-running the simulation
-## You will still need to download the Brain Dynamics Toolbox here https://bdtoolbox.org/
+### If you just wish to run the animations without re-running the simulation
+### You will still need to download the Brain Dynamics Toolbox here https://bdtoolbox.org/
 
-In the models folder, load a model into MATLAB, e.g.
+In the modelling/models folder, load a model into MATLAB, e.g.
 
 load HMM.mat sys
 gui = bdGUI(sys)
 
-## If you wish to run the simulations then  download the Brain Dynamics Toolbox here https://bdtoolbox.org/
-
+## If you wish to run the simulations then download the Brain Dynamics Toolbox here https://bdtoolbox.org/
 
 ### Kuramoto Shanahan model
 
-#### run the Kuramoto Shanahan model in the GUI
+#### to run the Kuramoto Shanahan model in the GUI:
 
 Kij = random_connections; sys = KuramotoShan(Kij); gui = bdGUI(sys);
 
 #### save the model from the GUI in models/
 
-#### run the simulation plot and save the video
+#### In the animations folder, run the simulation plot and save the video
 
 Plot_phases_Shanahan_extra(4000,10000,10,1)
 
@@ -43,7 +42,7 @@ Plot_phases_Shanahan_extra(4000,10000,10,1)
 
 n=5; kij=rand(n,n); Kij=kij-diag(diag(kij)) + diag(1); sys=HMM(Kij); gui=bdGUI(sys);
 
-#### run the simulation plot and save the video
+#### In the animations folder, run the simulation plot and save the video
 
 Plot_phases_HMM(1,2000,2,1)
 
@@ -55,7 +54,7 @@ Plot_phases_HMM(1,2000,2,1)
 n=8;Kij=ones(n);Kij=Kij-diag(diag(Kij));
 Kij=0.105*Kij;sys=HKB(Kij);gui=bdGUI(sys);
 
-#### run the simulation plot and save the video
+#### In the animations folder, run the simulation plot and save the video
 
 Plot_phases_HKB(7500,10000,10,1)
 
