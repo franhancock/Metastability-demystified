@@ -1,0 +1,199 @@
+---
+title:  "Non-parametric testing example Signatures of metastability"
+author: "Fran Hancock"
+affiliation: Department of Neuroimaging, Institute of Psychiatry, Psychology and Neuroscience, King's College London, London, UK 
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+fontsize: 14pt
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r,load_libraries,echo=FALSE, message=FALSE,include=FALSE}
+
+library(tidyverse)
+library(ggpubr)
+library(rstatix)
+library(cowplot)
+library(xlsx)
+library(knitr)
+library(MKinfer)
+library(vtable)
+
+
+################################# Set your project home directory here ###########################
+
+opts_knit$set(root.dir ='/Users/HDF/Hancock Dean Dropbox/Doug Dean/Fran/Academics/PostDoc/Projects/META_MODELLING/Signatures/')
+
+##################################################################################################
+
+cont_col<-"#0073C2FF"
+schz_col<-"#868686FF"
+
+
+etxt<-40
+axtxt<-28
+tittxt<-36
+stittxt<-20
+
+```
+
+### Calculate basic statistics and plot the results as boxplots and radar plots
+## 
+
+```{r,anova_META,echo=FALSE, message=FALSE}
+
+Regtb1<-read.csv('/Users/HDF/Hancock Dean Dropbox/Doug Dean/Fran/Academics/PostDoc/Projects/META_MODELLING/Signatures/RUN1/Regtable_run1.csv',stringsAsFactors=TRUE)
+Regtb2<-read.csv('/Users/HDF/Hancock Dean Dropbox/Doug Dean/Fran/Academics/PostDoc/Projects/META_MODELLING/Signatures/RUN2/Regtable_run2.csv',stringsAsFactors=TRUE)
+Desc <- read.csv('/Users/HDF/Hancock Dean Dropbox/Doug Dean/Fran/Academics/PostDoc/Projects/META_MODELLING/Signatures/RUN1/GLOBAL_Descriptors1.csv')
+
+
+Regtb<-rbind(Regtb1, Regtb2)
+
+```
+
+### Statistical testing for META
+
+```{r,meta,echo=FALSE, message=FALSE}
+
+
+colnames(Regtb)[3:6]<- colnames(Desc)
+metric <- colnames(Desc)
+n_metrics <- ncol(Desc)
+cond <- levels(Regtb$COND)
+farben<-c(cont_col,schz_col)
+
+metlabels <-colnames(Desc)
+
+absolute <- data.frame(matrix(NA,nrow = 1,ncol = n_metrics))
+minabs <-   data.frame(matrix(NA, nrow = 1, ncol = n_metrics))
+maxabs <-   data.frame(matrix(NA, nrow = 1, ncol = n_metrics))
+
+RegtbTmp <- Regtb[,-c(1:2)]
+
+s <- RegtbTmp  %>% summarise_all(list(~mean(.)))
+sss <- Regtb[,-1] %>% group_by(COND) %>% get_summary_stats()
+ss <- as.data.frame(s)
+colnames(ss) <- colnames(Desc)
+
+for(n in 1:n_metrics){
+  pseudo_metric <- ss[,n]
+  absolute[1,n]  <- max(pseudo_metric)
+}
+
+colnames(absolute) <- colnames(Desc)
+minabs[1,1:n_metrics] <-   0.0
+colnames(minabs) <- colnames(Desc)
+colnames(maxabs) <- colnames(Desc)
+
+# run the stats to store the results in an excel file
+#
+counter <- 1
+for (m in metric){
+  
+  form = paste(metric[counter],'~',"COND", collapse = NULL)
+  
+   ou<-Regtb %>% identify_outliers(m)
+# no extreme outliers
+
+   norma<-Regtb %>% group_by(COND) %>% shapiro_test(m)
+# p value > 0.5 for all modes so continue with 2 sample t-test
+
+   equv<-Regtb %>% levene_test(as.formula(form))
+     
+
+      switch(
+      counter,
+      ou1 <- ou,
+      ou2 <- ou,
+      ou3 <- ou,
+      ou4 <- ou
+   )
+   switch(
+      counter,
+      norma1 <- norma,
+      norma2 <- norma,
+      norma3 <- norma,
+      norma4 <- norma
+      )
+   switch(
+      counter,
+      equv1 <- equv,
+      equv2 <- equv,
+      equv3 <- equv,
+      equv4 <- equv
+   )
+  counter <- counter+1
+}
+
+# now write the results to an excel file
+ou_all = rbind(ou1,ou2,ou3,ou4)
+norma_all = rbind(norma1,norma2,norma3,norma4)
+equv_all = rbind(equv1,equv2,equv3,equv4)
+
+# run the stats to store the results in an excel file
+#
+
+st1<-sumtable(Regtb, vars=metric, out = 'return')
+symnum.args <- list(cutpoints = c(0, 0.0001, 0.001, 0.01, 0.05, Inf))
+symbols = c("****", "***", "**", "*", "ns")
+
+counter <- 1
+for (m in metric){
+  
+  form = paste(metric[counter],'~',"COND", collapse = NULL)
+  
+  xs<- compare_means(as.formula(form), data= Regtb, paired = FALSE, p.adjust.method = 'none') %>% add_significance("p.adj")
+
+      switch(
+      counter,
+      xs1 <- xs,
+      xs2 <- xs,
+      xs3 <- xs,
+      xs4 <- xs
+      
+   )
+   if(xs$p.signif == "ns"){
+    pstr3 = ""
+  } else {
+   pstr3 <- paste(xs$p.signif)
+  }
+   ptmp <- st1[counter,]
+   pmax <- ptmp[1,8]
+   pstr2 <- paste('Wilcoxen p = ', signif(as.numeric(xs$p.adj)))
+   pstr4 <- "Unadjusted"
+     
+   bpx<-ggboxplot(Regtb, x = "COND", y = metric[counter],
+          color = "COND",ylab = metlabels[counter], palette = farben) +
+          annotate(geom="text", x=xs$group1,y=as.numeric(pmax)*0.95, label=pstr3,size=10, col = "red", hjust = -4)+
+          stat_compare_means( paired = FALSE, hide.ns = TRUE)+
+          labs(title = pstr2, caption = pstr4 )
+   bp <- bpx + theme(plot.margin = unit(c(2,2,2,2), "lines"))
+  
+  switch(
+      counter,
+      bp1 <- bp,
+      bp2 <- bp,
+      bp3 <- bp,
+      bp4 <- bp
+   )
+   
+  counter <- counter+1
+}
+
+# now write the results to an excel file
+xs_all = rbind(xs1,xs2,xs3,xs4)
+
+write.xlsx(xs_all,'Results/01_Global_Metrics_kruskal.xlsx','pairwise',append = FALSE)
+write.xlsx(norma_all,'Results/01_Global_Metrics_kruskal.xlsx','normal',append = TRUE)
+write.xlsx(equv_all,'Results/01_Global_Metrics_kruskal.xlsx','equivalence',append = TRUE)
+write.xlsx(sss,'Results/01_Global_Metrics_kruskal.xlsx','descriptives',append = TRUE)
+
+# now combine the bocplots and save
+ga<-plot_grid(bp1,bp2,bp3,bp4,labels=c("A","B","C","D"), nrow=2,ncol=2, label_size = 35, vjust=1.2)
+ggsave('Figures/kruskal_Global_Metrics.pdf', width=30, height=30, units="cm")
+
+
+```
