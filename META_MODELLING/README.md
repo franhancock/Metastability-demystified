@@ -67,24 +67,33 @@ Plot_phases_HKB(7500,10000,10,1)
 AAL116 parcellated data for 20 Healthy controls and 20 patients with Schizophrenia are supplied
 Source - COBRE - See Metastability as a candidate neuromechanistic marker for schizophrenia, PLOS ONE 20
 
-### Step 1
-Modify the loadParameters.m if you are running this code on your own data.
+
+Modify the **loadParameters.m** if you are running this code on your own data.
 
 Otherwise
 
 Run **get_signatures.m**
 
-#### This file will calculate the 4 signatures in the manuscript and output the results in a csv file for statistical anaysis in R Studio
+This file will calculate the 4 signatures in the manuscript and output the results in a csv file for statistical anaysis in R Studio
 
-In the folder statistics, run 01_Global_metrics.Rmd in RStudio
+In the folder _statistics_, run **01_Global_metrics.Rmd** in RStudio
 
-#### The statistics will be saved in excel under the folder Results
+The statistics will be saved in excel under the folder _Results_
 
-#### The figure will be saved in the folder Figures
+The figure will be saved in the folder _Figures_
+
+For readability, the signatures have the following names in the figure:
+
+std-KOP = Metastability
+mean-VAR = Dynamical complexity
+std-SPECT = Dynamical agility
+std-IGNITE = Ignition flexibility 
+
 
 #### NOTE: For MAC users, depending on which OS version you are running, the export to Excel may not work.
 
-If all runs well, you should have the following figure in the Figures folder
+If all runs well, you should have the following figure in the Figures folder 
+![Boxplots Healthy Controls versus Schizophrenia](kruskal_Global_Metrics.pdf
 
 
 
