@@ -60,7 +60,7 @@ Plot_phases_HKB(7500,10000,10,1)
 
 # Signatures of metastability  
 
-### Instructions
+## Instructions
 
 #### The code for the signatures is in the Signatures folder
 
@@ -85,15 +85,18 @@ The figure will be saved in the folder _Figures_
 For readability, the signatures have the following names in the figure:
 
 std-KOP = Metastability
+
 mean-VAR = Dynamical complexity
+
 std-SPECT = Dynamical agility
+
 std-IGNITE = Ignition flexibility 
 
 
 #### NOTE: For MAC users, depending on which OS version you are running, the export to Excel may not work.
 
 If all runs well, you should have the following figure in the Figures folder 
-![Boxplots Healthy Controls versus Schizophrenia](kruskal_Global_Metrics.pdf
+![Boxplots Healthy Controls versus Schizophrenia](kruskal_Global_Metrics.pdf)
 
 
 
