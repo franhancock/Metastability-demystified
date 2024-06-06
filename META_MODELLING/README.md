@@ -72,7 +72,7 @@ Modify the loadParameters.m if you are running this code on your own data.
 
 Otherwise
 
-Run get_signatures.m
+Run **get_signatures.m**
 
 #### This file will calculate the 4 signatures in the manuscript and output the results in a csv file for statistical anaysis in R Studio
 
