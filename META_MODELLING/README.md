@@ -21,8 +21,6 @@ In the modelling/models folder, load a model into MATLAB, e.g.
 load HMM.mat sys
 gui = bdGUI(sys)
 
-## If you wish to run the simulations then download the Brain Dynamics Toolbox here https://bdtoolbox.org/
-
 ### Kuramoto Shanahan model
 
 #### to run the Kuramoto Shanahan model in the GUI:
@@ -65,7 +63,7 @@ Plot_phases_HKB(7500,10000,10,1)
 #### The code for the signatures is in the Signatures folder
 
 AAL116 parcellated data for 20 Healthy controls and 20 patients with Schizophrenia are supplied
-Source - COBRE - See Metastability as a candidate neuromechanistic marker for schizophrenia, PLOS ONE 20
+Source - COBRE - See Metastability as a candidate neuromechanistic marker for schizophrenia, 10.1371/journal.pone.0282707
 
 
 Modify the **loadParameters.m** if you are running this code on your own data.
